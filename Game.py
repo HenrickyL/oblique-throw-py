@@ -4,7 +4,7 @@ from Vector import Vector
 from  Color import Colors
 from Text import Text
 import math
-
+import os
 
 class Game:
     def __init__(self):
@@ -90,8 +90,8 @@ class Game:
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    self.resetAux()
                     self.calcVector()
+                    self.resetAux()
                     self.points.append(self.position)
                     self.position = Position(self.positionInitial.x, self.positionInitial.y)
                     self.start = True
@@ -150,6 +150,24 @@ class Game:
         vx = math.cos(angleRad) * self.power
         vy = math.sin(angleRad) * self.power
         self.speed = Vector(vx,-vy)
+        
+        clear = lambda: os.system('cls')
+        clear()
+        Hteorico = self.speed.magnitude()**2 * math.sin(angleRad)**2 / 2*self.gravity
+        print(f"HTeorico:{Hteorico}")
+        
+        DistTeorico = self.speed.magnitude()**2 * math.sin(angleRad*2) / self.gravity
+        print(f"DistanciaTeorico:{DistTeorico}")
+        
+        if(self.H_max != 0):
+            erro = 100*(self.H_max - Hteorico) / Hteorico 
+            print(f"erroH:{erro}")
+            
+        if(self.distance != 0):
+            erro = 100*(self.distance - DistTeorico) / DistTeorico 
+            print(f"erroD:{erro}")
+            
+        
         
     def getAngleRad(self, angle):
         return angle * math.pi / 180
